@@ -1,0 +1,1 @@
+You are now connected to database "nc_news" as user "Kirsty".
