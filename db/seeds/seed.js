@@ -8,26 +8,38 @@ const {
 const { formatDates, formatComments, makeRefObj } = require("../utils/utils");
 
 exports.seed = function(knex) {
-  return knex.migrate.rollback().then(() => {
-    knex.migrate.latest().then(() => {
-      const topicsInsertions = knex("topics").insert(topicData);
-      const usersInsertions = knex("users").insert(userData);
-      return Promise.all([topicsInsertions, usersInsertions])
-        .then(() => {
-          articleRows => {
+  return knex.migrate
+    .rollback()
+    .then(() => {
+      knex.migrate.latest().then(() => {
+        const topicsInsertions = knex("topics").insert(topicData);
+        const usersInsertions = knex("users").insert(userData);
+        return Promise.all([topicsInsertions, usersInsertions])
+          .then(() => {
             const formattedArticleDates = formatDates(articleRows);
-            return formattedArticleDates;
-          };
-          // reformat article data
-          //   1. change timestamp num to new Date
-        })
-        .then(formattedArticleDates => {
-          const articleRef = makeRefObj(articleRows);
-          const formattedComments = formatComments(commentData, articleRef);
-          return knex("comments").insert(formattedComments);
-        });
+            return knex("articles")
+              .insert(formattedArticleDates)
+              .returning("*");
+            // reformat article data
+            //   1. change timestamp num to new Date
+          })
+          .then(articleRows => {
+            const articleRef = makeRefObj(data);
+            const formattedComments = formatComments(
+              commentData,
+              articleRef,
+              "author_id",
+              "comment_id"
+            );
+            return knex("comments")
+              .insert(formattedComments)
+              .returning("*");
+          });
+      });
+    })
+    .catch(err => {
+      console.log(err, "<<<<<error in seed!!!!");
     });
-  });
 
   /* Your article data is currently in the incorrect format and will violate your SQL schema. 
       You will need to write and test the provided formatDate utility function to be able insert your article data.

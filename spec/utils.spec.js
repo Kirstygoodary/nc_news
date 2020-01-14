@@ -191,7 +191,7 @@ describe("formatComments", () => {
   it("returns and empty array when given an empty array of comments", () => {
     expect(formatComments([]).to.eql([]));
   });
-  it("when given one object in the array, it will format 'created_by' to use 'author_id' instead", () => {
+  it.only("when given one object in the array, it will format 'created_by' to use 'author_id' instead", () => {
     const commentsData = [
       {
         comment_id: 1,
@@ -204,7 +204,50 @@ describe("formatComments", () => {
       }
     ];
     const articleRef = { Mitch: 1 };
-    const expected = [{ author_id: 1 }];
-    expect(formatComments(commentsData, articleRef).to.eql(expected));
+    const keyToAdd = "author_id";
+    const keyToDelete = "comment_id";
+    const expected = [
+      {
+        body:
+          "Oh, I've got compassion running out of my nose, pal! I'm the Sultan of Sentiment!",
+        belongs_to: "They're not exactly dogs, are they?",
+        created_by: "butter_bridge",
+        votes: 16,
+        created_at: 1511354163389,
+        author_id: 1
+      }
+    ];
+    const actual = formatComments(
+      commentsData,
+      articleRef,
+      keyToAdd,
+      keyToDelete
+    );
+    expect(actual).to.eql(expected);
+  });
+  it("does not mutate the original data", () => {
+    const input = [
+      {
+        body:
+          "Oh, I've got compassion running out of my nose, pal! I'm the Sultan of Sentiment!",
+        belongs_to: "They're not exactly dogs, are they?",
+        created_by: "butter_bridge",
+        votes: 16,
+        created_at: 1511354163389,
+        author_id: 1
+      }
+    ];
+    const inputCopy = [
+      {
+        body:
+          "Oh, I've got compassion running out of my nose, pal! I'm the Sultan of Sentiment!",
+        belongs_to: "They're not exactly dogs, are they?",
+        created_by: "butter_bridge",
+        votes: 16,
+        created_at: 1511354163389,
+        author_id: 1
+      }
+    ];
+    expect(input).to.eql(inputCopy);
   });
 });

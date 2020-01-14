@@ -1,6 +1,6 @@
 exports.formatDates = datum => {
-  if(!datum.length) {
-    return []
+  if (!datum.length) {
+    return [];
   }
   let copiedData = JSON.parse(JSON.stringify(datum));
   //let test = new Date(datum[0].created_at).toString();
@@ -15,25 +15,27 @@ exports.formatDates = datum => {
   return copiedData;
 };
 
-exports.makeRefObj = datum => {
-  if(!datum.length) {
-    return {}
+exports.makeRefObj = data => {
+  if (!data.length) {
+    return {};
   }
   const obj = {};
-  datum.forEach(data => {
-    console.log(data.topic);
-    console.log(data.author_id);
-    obj[data.topic] = data.author_id;
+  data.forEach(datum => {
+    // console.log(data.topic);
+    // console.log(data.author_id);
+    obj[datum.topic] = datum.author_id;
   });
   return obj;
 };
 
-exports.formatComments = (commentsData, articleRef) => {
-
+exports.formatComments = (commentsData, articleRef, keyToAdd, keyToDelete) => {
   const formattedCommentsData = [];
 
   commentsData.forEach(comment => {
     const commentsCopy = { ...comment };
-    commentsCopy.comment_id = articleRef[commentsCopy.]
+    commentsCopy.author_id = commentsCopy[keyToDelete];
+    delete commentsCopy[keyToDelete];
+    formattedCommentsData.push(commentsCopy);
   });
+  return formattedCommentsData;
 };
