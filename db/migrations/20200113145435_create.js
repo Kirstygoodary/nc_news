@@ -1,5 +1,5 @@
 exports.up = function(knex) {
-  console.log("creating comments table");
+  //console.log("creating comments table");
 
   return knex.schema.createTable("comments", commentsTable => {
     commentsTable.increments("comment_id").primary();
@@ -18,6 +18,6 @@ exports.up = function(knex) {
 };
 
 exports.down = function(knex) {
-  console.log("the down function has been called for comments table");
+  // console.log("the down function has been called for comments table");
   return knex.schema.dropTable("comments");
 };

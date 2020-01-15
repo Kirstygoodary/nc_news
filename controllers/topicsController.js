@@ -1,9 +1,8 @@
 const selectTopics = require("../models/topicsModel");
 
 const sendTopics = (req, res, next) => {
-  //const query = req.query;
-  //console.log("<<<<<<<<in the topics Controller");
-  //console.log(query);
+  console.log("<<<<<<<<in the topics Controller");
+  //console.log(req, "<<<<<< req.query");
 
   selectTopics()
     .then(topics => {

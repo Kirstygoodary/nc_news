@@ -1,7 +1,7 @@
 const topicsRouter = require("express").Router();
 const sendTopics = require("../controllers/topicsController");
 
-topicsRouter.get("/", sendTopics);
+topicsRouter.route("/").get(sendTopics);
 
 //topicsRouter.route(":id")
 //.delete()
