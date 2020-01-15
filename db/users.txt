@@ -1,1 +1,11 @@
 You are now connected to database "nc_news" as user "Kirsty".
+   username   |                                                        avatar_url                                                        |    name     
+--------------+--------------------------------------------------------------------------------------------------------------------------+-------------
+ tickle122    | https://www.spiritsurfers.net/monastery/wp-content/uploads/_41500270_mrtickle.jpg                                        | Tom Tickle
+ grumpy19     | https://www.tumbit.com/profile-image/4/original/mr-grumpy.jpg                                                            | Paul Grump
+ happyamy2016 | https://vignette1.wikia.nocookie.net/mrmen/images/7/7f/Mr_Happy.jpg/revision/latest?cb=20140102171729                    | Amy Happy
+ cooljmessy   | https://i.imgur.com/WfX0Neu.jpg                                                                                          | Peter Messy
+ weegembump   | https://www.upandrunning.co.uk/media/catalog/product/cache/1/image/650x/040ec09b1e35df139433887a97daa66f/m/r/mr-bump.jpg | Gemma Bump
+ jessjelly    | https://s-media-cache-ak0.pinimg.com/564x/39/62/ec/3962eca164e60cf46f979c1f57d4078b.jpg                                  | Jess Jelly
+(6 rows)
+

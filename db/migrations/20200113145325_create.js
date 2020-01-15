@@ -2,10 +2,10 @@ exports.up = function(knex) {
   console.log("the up function has been called..creating topics table");
   return knex.schema.createTable("topics", topicsTable => {
     topicsTable
-      .increments("slug")
+      .text("slug")
       .primary()
       .notNullable();
-    topicsTable.string("description").notNullable();
+    topicsTable.text("description").notNullable();
   });
 };
 

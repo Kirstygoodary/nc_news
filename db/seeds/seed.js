@@ -10,32 +10,31 @@ const { formatDates, formatComments, makeRefObj } = require("../utils/utils");
 exports.seed = function(knex) {
   return knex.migrate
     .rollback()
+    .then(() => knex.migrate.latest())
     .then(() => {
-      knex.migrate.latest().then(() => {
-        const topicsInsertions = knex("topics").insert(topicData);
-        const usersInsertions = knex("users").insert(userData);
-        return Promise.all([topicsInsertions, usersInsertions])
-          .then(() => {
-            const formattedArticleDates = formatDates(articleRows);
-            return knex("articles")
-              .insert(formattedArticleDates)
-              .returning("*");
-            // reformat article data
-            //   1. change timestamp num to new Date
-          })
-          .then(articleRows => {
-            const articleRef = makeRefObj(data);
-            const formattedComments = formatComments(
-              commentData,
-              articleRef,
-              "author_id",
-              "comment_id"
-            );
-            return knex("comments")
-              .insert(formattedComments)
-              .returning("*");
-          });
-      });
+      const topicsInsertions = knex("topics").insert(topicData);
+      // .returning("*");
+
+      // console.log(topicData, "<<<< data");
+      const usersInsertions = knex("users").insert(userData);
+
+      return Promise.all([topicsInsertions, usersInsertions]);
+    })
+    .then(insertedData => {
+      // console.log(insertedData);
+      const formattedArticleDates = formatDates(articleData);
+      return knex("articles")
+        .insert(formattedArticleDates)
+        .returning("*");
+      // reformat article data
+      //   1. change timestamp num to new Date
+    })
+    .then(articleRows => {
+      const articleRef = makeRefObj(articleRows);
+      const formattedComments = formatComments(commentData, articleRef);
+      return knex("comments")
+        .insert(formattedComments)
+        .returning("*");
     })
     .catch(err => {
       console.log(err, "<<<<<error in seed!!!!");

@@ -125,65 +125,45 @@ describe("makeRefObj", () => {
     const data = [
       {
         author_id: 1,
-        title: "Living in the shadow of a great man",
-        topic: "mitch",
-        author: "butter_bridge",
-        body: "I find this existence challenging",
-        created_at: 1542284514171,
-        votes: 100
+        title: "Living in the shadow of a great man"
       }
     ];
     const actual = makeRefObj(data);
-    const expected = { mitch: 1 };
+    const expected = { "Living in the shadow of a great man": 1 };
     expect(actual).to.eql(expected);
   });
   it("returns a reference object when passed multiple objects in the array", () => {
     const data = [
       {
         author_id: 1,
-        title: "Living in the shadow of a great man",
-        topic: "mitch",
-        author: "butter_bridge",
-        body: "I find this existence challenging",
-        created_at: 1542284514171,
-        votes: 100
+        title: "Living in the shadow of a great man"
       },
       {
         author_id: 2,
-        title: "UNCOVERED: catspiracy to bring down democracy",
-        topic: "cats",
-        author: "rogersop",
-        body: "Bastet walks amongst us, and the cats are taking arms!",
-        created_at: 1037708514171
+        title: "UNCOVERED: catspiracy to bring down democracy"
       }
     ];
     const actual = makeRefObj(data);
-    const expected = { mitch: 1, cats: 2 };
+    const expected = {
+      "Living in the shadow of a great man": 1,
+      "UNCOVERED: catspiracy to bring down democracy": 2
+    };
     expect(actual).to.eql(expected);
   });
   it("does not mutate the original data", () => {
     const data = [
       {
         author_id: 1,
-        title: "Living in the shadow of a great man",
-        topic: "mitch",
-        author: "butter_bridge",
-        body: "I find this existence challenging",
-        created_at: 1542284514171,
-        votes: 100
+        title: "Living in the shadow of a great man"
       }
     ];
-    expect(data).to.eql([
+    const copyData = [
       {
         author_id: 1,
-        title: "Living in the shadow of a great man",
-        topic: "mitch",
-        author: "butter_bridge",
-        body: "I find this existence challenging",
-        created_at: 1542284514171,
-        votes: 100
+        title: "Living in the shadow of a great man"
       }
-    ]);
+    ];
+    expect(data).to.eql(copyData);
   });
 });
 
@@ -191,10 +171,9 @@ describe("formatComments", () => {
   it("returns and empty array when given an empty array of comments", () => {
     expect(formatComments([]).to.eql([]));
   });
-  it.only("when given one object in the array, it will format 'created_by' to use 'author_id' instead", () => {
+  it("when given one object in the array, it will (1) format 'belongs_to' to use 'article_id' instead, (2) reformat 'created_by' to 'author', (3) article_id will be the title's id value, (4) date for 'created_at' will be reformatted to a javascript object", () => {
     const commentsData = [
       {
-        comment_id: 1,
         body:
           "Oh, I've got compassion running out of my nose, pal! I'm the Sultan of Sentiment!",
         belongs_to: "They're not exactly dogs, are they?",
@@ -203,28 +182,21 @@ describe("formatComments", () => {
         created_at: 1511354163389
       }
     ];
-    const articleRef = { Mitch: 1 };
-    const keyToAdd = "author_id";
-    const keyToDelete = "comment_id";
+    const articleRef = { "Living in the shadow of a great man": 1 };
     const expected = [
       {
         body:
           "Oh, I've got compassion running out of my nose, pal! I'm the Sultan of Sentiment!",
-        belongs_to: "They're not exactly dogs, are they?",
-        created_by: "butter_bridge",
+        article_id: 1,
+        author: "butter_bridge",
         votes: 16,
-        created_at: 1511354163389,
-        author_id: 1
+        created_at: "2017-11-22T12:36:03.389Z"
       }
     ];
-    const actual = formatComments(
-      commentsData,
-      articleRef,
-      keyToAdd,
-      keyToDelete
-    );
+    const actual = formatComments(commentsData, articleRef);
     expect(actual).to.eql(expected);
   });
+
   it("does not mutate the original data", () => {
     const input = [
       {

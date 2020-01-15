@@ -10,6 +10,7 @@ const sendTopics = (req, res, next) => {
       res.status(200).send({ topics });
     })
     .catch(function(err) {
+      console.log(err, "<<<<<error");
       next(err);
     });
 };
