@@ -7,10 +7,8 @@ exports.formatDates = datum => {
 
   copiedData.forEach(function(data) {
     let formattedDate = new Date(data.created_at).toJSON();
-    //console.log(formattedDate, "FORMATTED DATE");
 
     data.created_at = formattedDate;
-    //console.log(copiedData, "<<<<<COPIED DATA");
   });
   return copiedData;
 };
@@ -25,7 +23,7 @@ exports.makeRefObj = data => {
     const id = datum.article_id;
     obj[title] = id;
   });
-  //console.log(obj);
+
   return obj;
 };
 

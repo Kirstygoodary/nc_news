@@ -28,8 +28,6 @@ describe("/app", () => {
         .get("/api/topicsss")
         .expect(404)
         .then(response => {
-          // console.log(response.body);
-          //NOTE - RESPONSE.BODY = {}
           expect(response.body.msg).to.equal("Route not found");
         });
     });
@@ -42,12 +40,6 @@ describe("/app", () => {
         .expect(200)
         .then(response => {
           expect(response.body).to.be.an("object");
-          //console.log(
-          // response.body,
-          // "<<<<results in app.spec for '/api/users/:username'"
-          //);
-          //expect
-          // need to add 'topics' in to object
         });
     });
     it("GET 404 - response with the appropriate error message when there is a bad request", () => {
@@ -55,7 +47,6 @@ describe("/app", () => {
         .get("/api/userss/:username")
         .expect(404)
         .then(response => {
-          // console.log(response.body);
           expect(response.body.msg).to.equal("Route not found");
         });
     });
@@ -66,16 +57,13 @@ describe("/app", () => {
       return request(app)
         .get("/api/articles/")
         .expect(200)
-        .then(response => {
-          // console.log(response.body, "<<<response.body");
-        });
+        .then(response => {});
     });
     it("GET: 404 - sends the appropriate error message when given a valid but non-existent id", () => {
       return request(app)
         .get("/api/articles/797")
         .expect(404)
         .then(response => {
-          //console.log(response);
           expect(response.body.msg).to.equal("Article does not exist");
         });
     });

@@ -1,15 +1,11 @@
 const selectTopics = require("../models/topicsModel");
 
 const sendTopics = (req, res, next) => {
-  //console.log("<<<<<<<<in the topics Controller");
-  //console.log(req, "<<<<<< req.query");
-
   selectTopics()
     .then(topics => {
       res.status(200).send({ topics });
     })
     .catch(function(err) {
-      // console.log(err, "<<<<<error");
       next(err);
     });
 };
@@ -26,7 +22,5 @@ const sendTopics = (req, res, next) => {
 // .where('house_id', id) <- condition. Here 'house_id' is the columns
 // .del()
 // .then(function(mystery) {
-//  console.log(mystery)
-//  })
 
 module.exports = sendTopics;

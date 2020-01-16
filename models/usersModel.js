@@ -1,13 +1,10 @@
 const connection = require("../db/connection");
 
 selectUsers = params => {
-  //console.log("in the users Model");
-
   return connection
     .select("*")
     .from("users")
     .then(results => {
-      console.log(results, "<<<results for user in Model");
       return results;
     });
 };

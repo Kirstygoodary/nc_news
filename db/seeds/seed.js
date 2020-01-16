@@ -16,15 +16,13 @@ exports.seed = function(knex) {
         .insert(topicData)
         .returning("*");
 
-      // console.log(topicData, "<<<< data");
       const usersInsertions = knex("users").insert(userData);
 
       return Promise.all([topicsInsertions, usersInsertions]);
     })
     .then(insertedData => {
-      //console.log(insertedData);
       const formattedArticleDates = formatDates(articleData);
-      //console.log(formattedArticleDates);
+
       return knex("articles")
         .insert(formattedArticleDates)
         .returning("*");
@@ -33,17 +31,14 @@ exports.seed = function(knex) {
     })
     .then(articleRows => {
       const articleRef = makeRefObj(articleRows);
-      //console.log(articleRows, "<<<<articlesRows");
-      //console.log(articleRef, "<<<<articleRef");
+
       const formattedComments = formatComments(commentData, articleRef);
-      console.log(formattedComments);
+
       return knex("comments")
         .insert(formattedComments)
         .returning("*");
     })
-    .catch(err => {
-      // console.log(err, "<<<<<error in seed!!!!");
-    });
+    .catch(err => {});
 
   /* Your article data is currently in the incorrect format and will violate your SQL schema. 
       You will need to write and test the provided formatDate utility function to be able insert your article data.
