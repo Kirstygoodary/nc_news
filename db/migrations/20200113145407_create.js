@@ -1,8 +1,11 @@
 exports.up = function(knex) {
   //console.log("creating articles table");
   return knex.schema.createTable("articles", articlesTable => {
-    articlesTable.increments("article_id").primary();
-    articlesTable.text("title");
+    articlesTable
+      .increments("article_id")
+      .primary()
+      .notNullable();
+    articlesTable.text("title").notNullable();
     articlesTable.text("body").notNullable();
     articlesTable
       .integer("votes")
@@ -12,8 +15,11 @@ exports.up = function(knex) {
       .text("topic")
       .references("topics.slug")
       .notNullable();
-    articlesTable.text("author").references("users.username");
-    articlesTable.timestamp("created_at");
+    articlesTable
+      .text("author")
+      .references("users.username")
+      .notNullable();
+    articlesTable.timestamp("created_at").notNullable();
   });
 };
 

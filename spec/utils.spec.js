@@ -121,7 +121,7 @@ describe("makeRefObj", () => {
     const data = [];
     expect(makeRefObj(data).to.eql({}));
   });
-  it("returns the reference object with the key value pairs for one topic", () => {
+  it.only("returns the reference object with the key value pairs for one topic", () => {
     const data = [
       {
         author_id: 1,

@@ -21,10 +21,11 @@ exports.makeRefObj = data => {
   }
   const obj = {};
   data.forEach(datum => {
-    // console.log(data.topic);
-    // console.log(data.author_id);
-    obj[datum.title] = datum.author_id;
+    const title = datum.title;
+    const id = datum.article_id;
+    obj[title] = id;
   });
+  //console.log(obj);
   return obj;
 };
 
@@ -33,12 +34,10 @@ exports.formatComments = (commentsData, articleRef) => {
 
   commentsData.forEach(comment => {
     const commentsCopy = { ...comment };
+    commentsCopy.article_id = articleRef[commentsCopy.belongs_to];
 
     commentsCopy.author = commentsCopy.created_by;
 
-    for (let key in articleRef) {
-      commentsCopy.article_id = articleRef[key];
-    }
     let formattedDate = new Date(commentsCopy.created_at).toJSON();
 
     commentsCopy.created_at = formattedDate;

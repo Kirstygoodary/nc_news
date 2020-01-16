@@ -5,7 +5,7 @@ selectUsers = params => {
 
   return connection
     .select("*")
-    .from(params)
+    .from("users")
     .then(results => {
       console.log(results, "<<<results for user in Model");
       return results;

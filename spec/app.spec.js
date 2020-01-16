@@ -23,15 +23,15 @@ describe("/app", () => {
           expect(response.body.topics[0]).to.have.keys("slug", "description");
         });
     });
-    it.only("GET: 404 - sends the appropriate error message when given a bad request", () => {
+    it("GET: 404 - sends the appropriate error message when given a bad request", () => {
       return request(app)
         .get("/api/topicsss")
-        .expect(404);
-      // //.then(response => {
-      // console.log(typeof response.body);
-      //   //NOTE - RESPONSE.BODY = {}
-      expect(response.body.msg).to.equal("Not found");
-      //});
+        .expect(404)
+        .then(response => {
+          console.log(response.body);
+          //NOTE - RESPONSE.BODY = {}
+          expect(response.body.msg).to.equal("Route not found");
+        });
     });
   });
 
@@ -50,24 +50,33 @@ describe("/app", () => {
           // need to add 'topics' in to object
         });
     });
-    it.only("GET 404 - response with the appropriate error message when there is a bad request", () => {
+    it("GET 404 - response with the appropriate error message when there is a bad request", () => {
       return request(app)
-        .get("/api/users/:uzernamee")
-        .expect(404);
-      // .then(response => {
-      //   console.log(response.body);
-      //   expect(response.body.msg).to.equal("Bad request");
-      // });
+        .get("/api/userss/:username")
+        .expect(404)
+        .then(response => {
+          console.log(response.body);
+          expect(response.body.msg).to.equal("Route not found");
+        });
     });
   });
 
-  describe("users", () => {
+  describe("articles", () => {
     it("responds with an article object, which has the properties 'author' (which is the username from the users table), 'title', 'article_id', 'body', 'topic', 'created_at', 'votes', and 'comment count'", () => {
       return request(app)
-        .get("/api/articles/:article_id")
+        .get("/api/articles/")
         .expect(200)
         .then(response => {
           console.log(response.body, "<<<response.body");
+        });
+    });
+    it("GET: 404 - sends the appropriate error message when given a valid but non-existent id", () => {
+      return request(app)
+        .get("/api/articles/797")
+        .expect(404)
+        .then(response => {
+          //console.log(response);
+          expect(response.body.msg).to.equal("Article does not exist");
         });
     });
   });
