@@ -1,7 +1,7 @@
 const connection = require("../db/connection");
 
 const selectArticles = () => {
-  console.log("<<<< in the users Model");
+  //console.log("<<<< in the users Model");
   return connection
     .select("articles.*")
     .from("articles")

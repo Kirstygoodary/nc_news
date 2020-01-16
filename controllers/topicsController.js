@@ -1,7 +1,7 @@
 const selectTopics = require("../models/topicsModel");
 
 const sendTopics = (req, res, next) => {
-  console.log("<<<<<<<<in the topics Controller");
+  //console.log("<<<<<<<<in the topics Controller");
   //console.log(req, "<<<<<< req.query");
 
   selectTopics()
@@ -9,7 +9,7 @@ const sendTopics = (req, res, next) => {
       res.status(200).send({ topics });
     })
     .catch(function(err) {
-      console.log(err, "<<<<<error");
+      // console.log(err, "<<<<<error");
       next(err);
     });
 };
