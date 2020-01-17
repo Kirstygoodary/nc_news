@@ -68,14 +68,22 @@ describe("/app", () => {
           expect(res.body).to.eql({ votes: 1 });
         });
     });
-    it.only("POST 200 - posts a comment to the article and responds with the post comment", () => {
+    it("POST 201 - posts a comment to the article and responds with the post comment", () => {
       return request(app)
         .post("/api/articles/1/comments")
-        .send({ username: "Kirsty", body: "Great article" })
+        .send({ username: "rogersop", body: "Great article" })
         .expect(201)
         .then(res => {
-          console.log(res.body);
-          //expect(res.body).to.eql({})
+          expect(res.body.comment[0].body).to.eql("Great article");
+          expect(res.body.comment[0].author).to.eql("rogersop");
+        });
+    });
+    it.only("GET 200 - responds with an array of comments for the given article_id ", () => {
+      return request(app)
+        .get("/api/articles/1/comments")
+        .expect(200)
+        .then(res => {
+          console.log(res);
         });
     });
     it("GET: 404 - sends the appropriate error message when given a valid but non-existent id", () => {
