@@ -12,13 +12,19 @@ const addComment = (article_id, body) => {
   // .catch(err => console.log(err));
 };
 
-const sendComments = article_id => {
+const sendComments = (article_id, sort_by = "created_at", order = "desc") => {
   return connection
-    .select("*")
+    .select("comment_id", "votes", "created_at", "author", "body")
     .from("comments")
     .where("comments.article_id", "=", article_id)
+    .orderBy(sort_by, order)
     .then(results => {
-      console.log(results);
+      return results;
     });
 };
+
 module.exports = { addComment, sendComments };
+
+//sort_by, which sorts the comments by any valid column (defaults to created_at)
+// order, which can be set to asc or desc for ascending or descending (defaults to descending)
+//module.exports = { addComment, sendComments };

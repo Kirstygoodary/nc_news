@@ -80,10 +80,12 @@ describe("/app", () => {
     });
     it.only("GET 200 - responds with an array of comments for the given article_id ", () => {
       return request(app)
-        .get("/api/articles/1/comments")
+        .get("/api/articles/1/comments?sort_by=created_at&&order=asc")
         .expect(200)
         .then(res => {
-          console.log(res);
+          expect(res.body.comments[0]).to.be.sortedBy("created_at", {
+            ascending: true
+          });
         });
     });
     it("GET: 404 - sends the appropriate error message when given a valid but non-existent id", () => {
