@@ -24,7 +24,7 @@ describe("/app", () => {
           expect(response.body.topics[0]).to.have.keys("slug", "description");
         });
     });
-    it.only("PATCH 405 - sends the appropriate error message when given a patch request", () => {
+    it("PATCH 405 - sends the appropriate error message when given a patch request", () => {
       return request(app)
         .patch("/api/topics")
         .expect(405);
@@ -59,7 +59,7 @@ describe("/app", () => {
   });
 
   describe("articles", () => {
-    it.only("responds with an article object, which has the properties 'author' (which is the username from the users table), 'title', 'article_id', 'body', 'topic', 'created_at', 'votes', and 'comment count'", () => {
+    it("responds with an article object, which has the properties 'author' (which is the username from the users table), 'title', 'article_id', 'body', 'topic', 'created_at', 'votes', and 'comment count'", () => {
       return request(app)
         .get("/api/articles/")
         .expect(200)
@@ -67,7 +67,7 @@ describe("/app", () => {
           expect(response.body.articles[0].article_id).to.equal(1);
         });
     });
-    it.only("responds with the first article which should have a comment_count of 13", () => {
+    it("responds with the first article which should have a comment_count of 13", () => {
       return request(app)
         .get("/api/articles/")
         .expect(200)
@@ -75,7 +75,7 @@ describe("/app", () => {
           expect(response.body.articles[0].comment_count).to.equal("13");
         });
     });
-    it.only("responds with the articles for butter_bridge", () => {
+    it("responds with the articles for butter_bridge", () => {
       return request(app)
         .get("/api/articles?author=butter_bridge")
         .expect(200)
@@ -85,7 +85,7 @@ describe("/app", () => {
           expect(response.body.articles[2].author).to.equal("butter_bridge");
         });
     });
-    it.only("PATCH 200 - updates the votes and responds with the updated article", () => {
+    it("PATCH 200 - updates the votes and responds with the updated article", () => {
       return request(app)
         .patch("/api/articles/1")
         .send({ inc_votes: 1 })
@@ -94,13 +94,13 @@ describe("/app", () => {
           expect(res.body.votes[0].votes).to.eql(101);
         });
     });
-    it.only("PATCH 400 - sends a 400 when there is an invalid votes value", () => {
+    it("PATCH 400 - sends a 400 when there is an invalid votes value", () => {
       return request(app)
         .patch("/api/articles/1")
         .send({ inc_votes: "a" })
         .expect(400);
     });
-    it.only("PATCH 200 - ignores a patch request when there is no information in the body, and sends the unchanged article to the client", () => {
+    it("PATCH 200 - ignores a patch request when there is no information in the body, and sends the unchanged article to the client", () => {
       return request(app)
         .patch("/api/articles/1")
         .expect(200)
@@ -108,7 +108,7 @@ describe("/app", () => {
           expect(res.body.article.votes).to.eql(100);
         });
     });
-    it.only("GET 200 - a request for article id 1 returns an object", () => {
+    it("GET 200 - a request for article id 1 returns an object", () => {
       return request(app)
         .get("/api/articles/1")
         .expect(200)
@@ -132,9 +132,13 @@ describe("/app", () => {
         .then(res => {
           expect(res.body.comment[0].body).to.eql("Great article");
           expect(res.body.comment[0].author).to.eql("rogersop");
+          expect(res.body.comment[0].votes).to.eql(0);
+          expect(res.body.comment[0].created_at).to.eql(
+            "2020-01-19T00:00:00.000Z"
+          );
         });
     });
-    it.only("GET 200 - responds with an array of comments for the given article_id ", () => {
+    it("GET 200 - responds with an array of comments for the given article_id ", () => {
       return request(app)
         .get("/api/articles/1/comments?sort_by=created_at&&order=asc")
         .expect(200)
@@ -145,7 +149,7 @@ describe("/app", () => {
           });
         });
     });
-    it.only("GET 200 - responds with an array of comments, with a key of comments", () => {
+    it("GET 200 - responds with an array of comments, with a key of comments", () => {
       return request(app)
         .get("/api/articles/1/comments?sort_by=created_at&&order=asc")
         .expect(200)
@@ -154,7 +158,7 @@ describe("/app", () => {
           expect(res.body.comments).to.be.an("Array");
         });
     });
-    it.only("GET 200 - responds with an array of comments for the given article_id ", () => {
+    it("GET 200 - responds with an array of comments for the given article_id ", () => {
       return request(app)
         .get("/api/articles?sort_by=author")
         .expect(200)
@@ -162,7 +166,7 @@ describe("/app", () => {
           expect(res.body.articles[0].author).to.eql("rogersop");
         });
     });
-    it.only("GET 200 - responds with a sorted order of articles, in ascending order", () => {
+    it("GET 200 - responds with a sorted order of articles, in ascending order", () => {
       return request(app)
         .get("/api/articles?order=asc")
         .expect(200)
@@ -171,7 +175,7 @@ describe("/app", () => {
         });
     });
 
-    it.only("GET 200 - responds with an of articles for author butter_bridge", () => {
+    it("GET 200 - responds with an of articles for author butter_bridge", () => {
       return request(app)
         .get("/api/articles?author=butter_bridge")
         .expect(200)
@@ -181,7 +185,7 @@ describe("/app", () => {
           expect(res.body.articles[2].author).to.eql("butter_bridge");
         });
     });
-    it.only("GET 200 - responds with an array of articles for topic mitch", () => {
+    it("GET 200 - responds with an array of articles for topic mitch", () => {
       return request(app)
         .get("/api/articles?topic=mitch")
         .expect(200)
@@ -190,7 +194,7 @@ describe("/app", () => {
           expect(res.body.articles[0].topic).to.eql("mitch");
         });
     });
-    it.only("GET 200 - responds with an empty array for author Lurker", () => {
+    it("GET 200 - responds with an empty array for author Lurker", () => {
       return request(app)
         .get("/api/articles?author=lurker")
         .expect(200)
@@ -199,7 +203,7 @@ describe("/app", () => {
           expect(res.body.articles).to.eql([]);
         });
     });
-    it.only("GET 200 - responds with an empty array for topic 'paper'", () => {
+    it("GET 200 - responds with an empty array for topic 'paper'", () => {
       return request(app)
         .get("/api/articles?topic=paper")
         .expect(200)
@@ -216,22 +220,22 @@ describe("/app", () => {
           expect(response.body.msg).to.equal("Article does not exist");
         });
     });
-    it.only("GET: 404 - sends the appropriate error message when given a non-existent topic", () => {
+    it("GET: 404 - sends the appropriate error message when given a non-existent topic", () => {
       return request(app)
         .get("/api/articles/?topic=not-a-topic")
         .expect(404);
     });
-    it.only("GET: 404 - sends the appropriate error message when given a non-existent author", () => {
+    it("GET: 404 - sends the appropriate error message when given a non-existent author", () => {
       return request(app)
         .get("/api/articles/?author=not-an-author")
         .expect(404);
     });
-    it.only("PATCH 405 - sends the appropriate error message when given a patch request", () => {
+    it("PATCH 405 - sends the appropriate error message when given a patch request", () => {
       return request(app)
         .patch("/api/articles")
         .expect(405);
     });
-    it.only("GET 200 - returns the article with id 2", () => {
+    it("GET 200 - returns the article with id 2", () => {
       return request(app)
         .get("/api/articles/2")
         .expect(200)
@@ -240,7 +244,7 @@ describe("/app", () => {
           expect(res.body.article.comment_count).to.eql("0");
         });
     });
-    it.only("returns article id 1", () => {
+    it("returns article id 1", () => {
       return request(app)
         .get("/api/articles/1")
         .expect(200)
@@ -248,12 +252,12 @@ describe("/app", () => {
           expect(res.body.article.comment_count).to.eql("13");
         });
     });
-    it.only("PUT 405 - sends the appropriate error message when given a patch request", () => {
+    it("PUT 405 - sends the appropriate error message when given a patch request", () => {
       return request(app)
         .put("/api/articles/1")
         .expect(405);
     });
-    it.only("sorts the articles by votes in descending order", () => {
+    it("sorts the articles by votes in descending order", () => {
       return request(app)
         .get("/api/articles/1/comments?sort_by=votes")
         .expect(200)
@@ -261,7 +265,7 @@ describe("/app", () => {
           expect(res.body.comments[0].votes).to.eql(100);
         });
     });
-    it.only("sorts the articles by votes in ascending order", () => {
+    it("sorts the articles by votes in ascending order", () => {
       return request(app)
         .get("/api/articles/1/comments?order=asc")
         .expect(200)
@@ -271,7 +275,7 @@ describe("/app", () => {
           );
         });
     });
-    it.only("returns a 200 with an empty array when the article exists but has no comments", () => {
+    it("returns a 200 with an empty array when the article exists but has no comments", () => {
       return request(app)
         .get("/api/articles/2/comments")
         .expect(200)
@@ -279,27 +283,27 @@ describe("/app", () => {
           expect(res.body.comments.length).to.eql(0);
         });
     });
-    it.only("returns a 404 when articles does not exist in comments endpoint", () => {
+    it("returns a 404 when articles does not exist in comments endpoint", () => {
       return request(app)
         .get("/api/articles/2000/comments")
         .expect(404);
     });
-    it.only("returns a 400 when given a non-existent id", () => {
+    it("returns a 400 when given a non-existent id", () => {
       return request(app)
         .get("/api/articles/not-a-valid-id/comments")
         .expect(400);
     });
-    // it.only("returns a 400 when supplied an invalid order for comments", () => {
+    // it("returns a 400 when supplied an invalid order for comments", () => {
     //   return request(app)
     //     .get("/api/articles/1/comments?order=not-a-valid-order")
     //     .expect(400);
     // });
-    it.only("PUT 405 - sends the appropriate error message when given a patch request for comments", () => {
+    it("PUT 405 - sends the appropriate error message when given a patch request for comments", () => {
       return request(app)
         .put("/api/articles/1/comments")
         .expect(405);
     });
-    it.only("POST 201 - sends the appropriate response when given a post request for comments on article_id", () => {
+    it("POST 201 - sends the appropriate response when given a post request for comments on article_id", () => {
       return request(app)
         .post("/api/articles/1/comments")
         .send({
@@ -311,11 +315,54 @@ describe("/app", () => {
           expect(res.body).to.contain.keys("comment");
         });
     });
-    it.only("PATCH 400 - sends a 400 when there is an invalid increased votes value", () => {
+    it("PATCH 400 - sends a 400 when there is an invalid increased votes value", () => {
       return request(app)
         .patch("/api/comments/1")
         .send({ inc_votes: "a" })
         .expect(400);
+    });
+    it("PATCH 200 - sends a 200 when there's an updated vote for comments", () => {
+      return request(app)
+        .patch("/api/comments/1")
+        .send({ inc_votes: 1 })
+        .expect(200)
+        .then(res => {
+          expect(res.body.comment[0].votes).to.eql(17);
+          expect(res.body.comment[0]).to.contain.keys("votes");
+          expect(res.body).to.contain.keys("comment");
+        });
+    });
+    it("PUT 405 - sends a 405 when a put request is made for comments", () => {
+      return request(app)
+        .put("/api/comments/1")
+        .expect(405);
+    });
+    it("DEL 204 when a succesful delete request for comments", () => {
+      return request(app)
+        .del("/api/comments/1")
+        .expect(204);
+    });
+    it("DEL 400 received when a comment id is not a number", () => {
+      return request(app)
+        .del("/api/comments/not-a-number")
+        .expect(400);
+    });
+    it("POST 400, sends a 400 when the post request does not include all the keys", () => {
+      return request(app)
+        .post("/api/articles/1/comments")
+        .send({ username: "rogersop" })
+        .expect(400);
+    });
+    it("POST 400, sends a 400 when the article id is not a valid id", () => {
+      return request(app)
+        .post("/api/articles/not-a-valid-id/comments")
+        .expect(400);
+    });
+    it("PATCH 200 - sends a 200 when sent a body with no inc_votes property", () => {
+      return request(app)
+        .patch("/api/comments/1")
+        .send()
+        .expect(200);
     });
   });
 });

@@ -8,11 +8,14 @@ const selectTopics = require("../models/topicsModel");
 
 const selectUsers = require("../models/usersModel");
 
-const sendArticles = (req, res, next) => {
+const sendArticles = async (req, res, next) => {
   const { author } = req.query;
   const { topic } = req.query;
   const { sort_by } = req.query;
   const { order } = req.query;
+
+  let selectTopicsErrored = false;
+  let selectUsersErrored = false;
 
   /**
    * Before we continue, let's just make sure
@@ -22,13 +25,20 @@ const sendArticles = (req, res, next) => {
    * If the query does not exist, it will be caught by the catch as an error
    */
 
-  selectTopics(topic).catch(err => {
-    /**
-     * if there is an error, the catch will send a status of 404.
-     * We need to return res.sendStatus so that the code stop
-     * executing
-     */
-    return res.sendStatus(404);
+  /**
+   * In order to test whether author or
+   * topic is undefined, before sending
+   * the error message, we need to tell
+   * Javascript to wait for the results
+   * from selectTopics and selectUsers,
+   *
+   * We are using a switch system, if the
+   * results turn true then we need to
+   * test whether either are true,
+   * before sending the error status
+   */
+  await selectTopics(topic).catch(err => {
+    selectTopicsErrored = true;
   });
 
   /**
@@ -36,15 +46,22 @@ const sendArticles = (req, res, next) => {
    * exists, before we query the Articles Model.
    */
 
-  selectUsers(author).catch(err => {
+  await selectUsers(author).catch(err => {
+    selectUsersErrored = true;
     /**
      * if there is an error, the catch will send a status of 404.
      * We need to return res.sendStatus so that the code stop
      * executing
      */
     console.log("no user found");
-    return res.sendStatus(404);
   });
+
+  console.log(selectTopicsErrored, "topicsErrored");
+  console.log(selectUsersErrored, "usersErrored");
+
+  if (selectTopicsErrored === true || selectUsersErrored === true) {
+    return res.sendStatus(404);
+  }
 
   selectArticles(author, topic, sort_by, order)
     .then(fetchedArticles => {
@@ -93,6 +110,7 @@ const updateVotes = (req, res, next) => {
    * empty before sending the unchanged article back to
    * the client.
    */
+
   if (JSON.stringify(req.body) === "{}") {
     selectArticlesById(article_id)
       .then(fetchedArticle => {
@@ -104,13 +122,17 @@ const updateVotes = (req, res, next) => {
         console.error(err);
         next(err);
       });
-  }
 
-  changeVotes(article_id, body)
-    .then(votes => {
-      return res.status(200).send({ votes });
-    })
-    .catch(next);
+    /**
+     * If the body is not an empty object, execute changeVotes
+     */
+  } else {
+    changeVotes(article_id, body)
+      .then(votes => {
+        return res.status(200).send({ votes });
+      })
+      .catch(next);
+  }
 };
 
 /**

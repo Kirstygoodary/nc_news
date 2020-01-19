@@ -24,10 +24,41 @@ const sendComments = (article_id, sort_by = "created_at", order = "desc") => {
 };
 
 changeComment = (comment_id, inc_votes) => {
-  // return
+  return connection
+    .select("*")
+    .from("comments")
+    .where("comments.comment_id", "=", comment_id)
+    .increment("votes", inc_votes)
+    .returning("*")
+    .then(results => {
+      console.log(results, "<<<<results for updating votes");
+      return results;
+    });
 };
 
-module.exports = { addComment, sendComments, changeComment };
+deleteCommentModel = comment_id => {
+  return connection
+    .select("*")
+    .from("comments")
+    .where("comments.comment_id", "=", comment_id)
+    .del()
+    .then(function(deleteCount) {
+      if (!deleteCount) {
+        return Promise.reject({
+          status: 404,
+          msg: "Not found"
+        });
+      }
+      return deleteCount;
+    });
+};
+
+module.exports = {
+  addComment,
+  sendComments,
+  changeComment,
+  deleteCommentModel
+};
 
 //sort_by, which sorts the comments by any valid column (defaults to created_at)
 // order, which can be set to asc or desc for ascending or descending (defaults to descending)
