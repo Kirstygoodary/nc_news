@@ -1,12 +1,29 @@
 const connection = require("../db/connection");
 
-const selectArticles = () => {
+const selectArticles = (
+  author,
+  topic,
+  sort_by = "created_at",
+  order = "desc"
+) => {
   return connection
     .select("articles.*")
     .from("articles")
     .count({ comment_count: "comments.comment_id" })
     .leftJoin("comments", "articles.article_id", "=", "comments.article_id")
     .groupBy("articles.article_id")
+    .modify(function(currentQuery) {
+      if (author) {
+        console.log("Overriding author in the model with:", author);
+        currentQuery.where("articles.author", author);
+      } else {
+        if (topic) {
+          console.log("Overriding topics in the model with:", topic);
+          currentQuery.where("articles.topic", topic);
+        }
+      }
+    })
+    .orderBy(sort_by, order)
     .then(results => {
       return results;
     });
@@ -31,13 +48,15 @@ const selectArticlesById = article_id => {
     });
 };
 
-const changeVotes = (id, body) => {
+const changeVotes = (article_id, body = 0) => {
   return connection
     .select("*")
     .from("articles")
-    .where("articles.article_id", "=", id)
-    .increment("votes", body.inc_votes)
+    .where("articles.article_id", "=", article_id)
+    .increment("votes", body)
+    .returning("*")
     .then(results => {
+      console.log(results, "<<<<results for updating votes");
       return results;
     });
 };

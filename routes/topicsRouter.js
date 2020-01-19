@@ -1,11 +1,17 @@
 const topicsRouter = require("express").Router();
-const sendTopics = require("../controllers/topicsController");
+const {
+  sendTopics,
+  patchTopics,
+  catchAllController
+} = require("../controllers/topicsController");
 
-topicsRouter.route("/").get(sendTopics);
+topicsRouter
+  .route("/")
+  .get(sendTopics)
+  .all(catchAllController);
 
-//topicsRouter.route(":id")
-//.delete()
-//.get()
-// DRY principle
+/**
+ * .all() -> method which catches all other requests that will in this instance return a 405
+ */
 
 module.exports = topicsRouter;

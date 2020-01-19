@@ -1,18 +1,16 @@
-const connection = require("../db/connection");
-
-const selectTopics = topic => {
+const selectAuthor = author => {
   return connection
     .select("*")
-    .from("topics")
+    .from("articles")
     .modify(function(currentQuery) {
       /**
        * here -> if there is a query for a topic, the
        * model will add additional functionality to check if the 'slug' corresponds with the query
        */
-      if (topic) {
-        console.log("Overriding topic in the model with:", topic);
+      if (author) {
+        console.log("Overriding author in the model with:", author);
 
-        currentQuery.where("topics.slug", topic);
+        currentQuery.where("articles.author", author);
       }
     })
     .then(results => {
@@ -27,5 +25,3 @@ const selectTopics = topic => {
       return results;
     });
 };
-
-module.exports = selectTopics;

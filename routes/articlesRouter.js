@@ -2,7 +2,10 @@ const articlesRouter = require("express").Router();
 const {
   sendArticles,
   sendArticlesById,
-  updateVotes
+  updateVotes,
+  patchArticles,
+  putArticles,
+  putComments
 } = require("../controllers/articlesController");
 
 const {
@@ -10,15 +13,21 @@ const {
   getComments
 } = require("../controllers/commentsController");
 
-articlesRouter.route("/").get(sendArticles);
+articlesRouter
+  .route("/")
+  .get(sendArticles)
+  .patch(patchArticles);
 
 articlesRouter
   .route("/:article_id")
   .get(sendArticlesById)
-  .patch(updateVotes);
+  .patch(updateVotes)
+  .put(putArticles);
 
 articlesRouter
   .route("/:article_id/comments")
   .post(postComment)
-  .get(getComments);
+  .get(getComments)
+  .put(putComments);
+
 module.exports = articlesRouter;

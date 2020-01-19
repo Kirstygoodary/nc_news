@@ -23,7 +23,11 @@ const sendComments = (article_id, sort_by = "created_at", order = "desc") => {
     });
 };
 
-module.exports = { addComment, sendComments };
+changeComment = (comment_id, inc_votes) => {
+  // return
+};
+
+module.exports = { addComment, sendComments, changeComment };
 
 //sort_by, which sorts the comments by any valid column (defaults to created_at)
 // order, which can be set to asc or desc for ascending or descending (defaults to descending)
