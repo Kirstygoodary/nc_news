@@ -8,9 +8,14 @@ const { selectArticlesById } = require("../models/articlesModel");
 
 const postComment = (req, res, next) => {
   const { article_id } = req.params;
-  const body = req.body;
+  const { body } = req.body;
+  const { username } = req.body;
 
-  addComment(article_id, body)
+  console.log(article_id, "<<<article id");
+  console.log(body, "<<<<Body");
+  console.log(username);
+
+  addComment(username, body, article_id)
     .then(comment => {
       return res.status(201).send({ comment });
     })
@@ -71,11 +76,17 @@ const getComments = (req, res, next) => {
 
 const amendComment = (req, res, next) => {
   const { comment_id } = req.params;
-  const { inc_votes } = req.body;
+  const inc_votes = req.body.inc_votes || 0;
+
+  /**
+   * For inc_votes, if req.body.inc_votes does not
+   * exist, for example when there is no body
+   * in the request, inc_votes will default to 0
+   */
 
   changeComment(comment_id, inc_votes)
     .then(comment => {
-      return res.status(200).send({ comment });
+      return res.status(200).send({ comment: comment[0] });
     })
     .catch(next);
 };

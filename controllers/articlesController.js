@@ -128,8 +128,8 @@ const updateVotes = (req, res, next) => {
      */
   } else {
     changeVotes(article_id, body)
-      .then(votes => {
-        return res.status(200).send({ votes });
+      .then(article => {
+        return res.status(200).send({ article });
       })
       .catch(next);
   }

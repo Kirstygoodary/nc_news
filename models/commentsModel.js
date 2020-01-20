@@ -1,10 +1,10 @@
 const connection = require("../db/connection");
 
-const addComment = (article_id, body) => {
+const addComment = (username, body, article_id) => {
   return connection
-    .select("comments.*")
+    .select("comment_id", "votes", "created_at", "author", "body")
     .from("comments")
-    .insert({ author: body.username, body: body.body, article_id: article_id })
+    .insert({ author: username, body: body, article_id: article_id })
     .returning("*")
     .then(results => {
       return results;

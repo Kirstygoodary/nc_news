@@ -1,13 +1,22 @@
 const selectUsers = require("../models/usersModel");
 
 const sendUsers = (req, res, next) => {
-  const params = req.params;
+  const { username } = req.params;
+  console.log(req.params);
 
-  selectUsers()
-    .then(users => {
-      return res.status(200).send({ users });
+  console.log(username, "AUTHOR");
+
+  selectUsers(username)
+    .then(user => {
+      return res.status(200).send({ user: user[0] });
     })
-    .catch(function(err) {});
+    .catch(next);
 };
 
-module.exports = sendUsers;
+const putUsers = (req, res, next) => {
+  console.log("here");
+
+  return res.sendStatus(405); // Send the response.
+};
+
+module.exports = { sendUsers, putUsers };

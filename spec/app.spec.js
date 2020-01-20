@@ -42,9 +42,10 @@ describe("/app", () => {
   describe("/users", () => {
     it("GET 200 - response with a user object with properties 'username', 'avatar_url' and 'name'", () => {
       return request(app)
-        .get("/api/users/:username")
+        .get("/api/users/butter_bridge")
         .expect(200)
         .then(response => {
+          console.log(response.body);
           expect(response.body).to.be.an("object");
         });
     });
@@ -91,7 +92,8 @@ describe("/app", () => {
         .send({ inc_votes: 1 })
         .expect(200)
         .then(res => {
-          expect(res.body.votes[0].votes).to.eql(101);
+          expect(res.body.article[0].votes).to.eql(101);
+          expect(res.body).to.contain.keys("article");
         });
     });
     it("PATCH 400 - sends a 400 when there is an invalid votes value", () => {
@@ -103,8 +105,10 @@ describe("/app", () => {
     it("PATCH 200 - ignores a patch request when there is no information in the body, and sends the unchanged article to the client", () => {
       return request(app)
         .patch("/api/articles/1")
+        .send()
         .expect(200)
         .then(res => {
+          console.log(res.body);
           expect(res.body.article.votes).to.eql(100);
         });
     });
@@ -130,12 +134,24 @@ describe("/app", () => {
         .send({ username: "rogersop", body: "Great article" })
         .expect(201)
         .then(res => {
+          console.log(res.body.comment[0], "<<<<<<<<<");
+          expect(res.body).to.contain.keys("comment");
+          expect(res.body.comment[0]).to.contain.keys(
+            "comment_id",
+            "author",
+            "body",
+            "votes",
+            "created_at"
+          );
           expect(res.body.comment[0].body).to.eql("Great article");
           expect(res.body.comment[0].author).to.eql("rogersop");
           expect(res.body.comment[0].votes).to.eql(0);
           expect(res.body.comment[0].created_at).to.eql(
-            "2020-01-19T00:00:00.000Z"
+            "2020-01-20T00:00:00.000Z"
           );
+          /**
+           * This test needs to be amended so that it provides the updated date every time the data is migrated.
+           */
         });
     });
     it("GET 200 - responds with an array of comments for the given article_id ", () => {
@@ -288,6 +304,11 @@ describe("/app", () => {
         .get("/api/articles/2000/comments")
         .expect(404);
     });
+    it("returns a 404 when articles does not exist in comments endpoint, for 1000 article id", () => {
+      return request(app)
+        .get("/api/articles/10000/comments")
+        .expect(404);
+    });
     it("returns a 400 when given a non-existent id", () => {
       return request(app)
         .get("/api/articles/not-a-valid-id/comments")
@@ -319,7 +340,8 @@ describe("/app", () => {
       return request(app)
         .patch("/api/comments/1")
         .send({ inc_votes: "a" })
-        .expect(400);
+        .expect(400)
+        .then(res => console.log(res.body, "results for when inc votes is a"));
     });
     it("PATCH 200 - sends a 200 when there's an updated vote for comments", () => {
       return request(app)
@@ -327,8 +349,8 @@ describe("/app", () => {
         .send({ inc_votes: 1 })
         .expect(200)
         .then(res => {
-          expect(res.body.comment[0].votes).to.eql(17);
-          expect(res.body.comment[0]).to.contain.keys("votes");
+          expect(res.body.comment.votes).to.eql(17);
+          expect(res.body.comment).to.contain.keys("votes");
           expect(res.body).to.contain.keys("comment");
         });
     });
@@ -362,7 +384,40 @@ describe("/app", () => {
       return request(app)
         .patch("/api/comments/1")
         .send()
-        .expect(200);
+        .expect(200)
+        .then(res => {
+          expect(res.body.comment.votes).to.eql(16);
+        });
+    });
+    it("GET 200 - sends a user object when there's a get request for the user", () => {
+      return request(app)
+        .get("/api/users/butter_bridge")
+        .expect(200)
+        .then(res => {
+          console.log(res.body);
+          expect(res.body).to.contain.keys("user");
+          expect(res.body).to.be.an("object");
+          expect(res.body.user).to.contain.keys(
+            "username",
+            "avatar_url",
+            "name"
+          );
+        });
+    });
+    it("GET: 404 - sends the appropriate error message when given a non-existent username", () => {
+      return request(app)
+        .get("/api/users/not-a-username")
+        .expect(404);
+    });
+    it("PUT 405 - sends the appropriate error message when given a put request for username", () => {
+      return request(app)
+        .put("/api/users/butter_bridge")
+        .expect(405);
+    });
+    it("DELETE 405 - sends the appropriate error message when a delete request is made for the api", () => {
+      return request(app)
+        .del("/api")
+        .expect(405);
     });
   });
 });

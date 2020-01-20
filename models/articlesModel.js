@@ -1,7 +1,7 @@
 const connection = require("../db/connection");
 
 const selectArticles = (
-  author,
+  username,
   topic,
   sort_by = "created_at",
   order = "desc"
@@ -13,9 +13,9 @@ const selectArticles = (
     .leftJoin("comments", "articles.article_id", "=", "comments.article_id")
     .groupBy("articles.article_id")
     .modify(function(currentQuery) {
-      if (author) {
-        console.log("Overriding author in the model with:", author);
-        currentQuery.where("articles.author", author);
+      if (username) {
+        console.log("Overriding username in the model with:", username);
+        currentQuery.where("articles.author", username);
       } else {
         if (topic) {
           console.log("Overriding topics in the model with:", topic);

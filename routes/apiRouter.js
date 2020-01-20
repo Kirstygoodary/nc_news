@@ -4,6 +4,10 @@ const usersRouter = require("../routes/usersRouter");
 const articlesRouter = require("../routes/articlesRouter");
 const commentsRouter = require("../routes/commentsRouter");
 
+apiRouter.delete("/", (req, res, next) => {
+  return res.sendStatus(405);
+});
+
 apiRouter.use("/topics", topicsRouter);
 apiRouter.use("/users", usersRouter);
 apiRouter.use("/articles", articlesRouter);
