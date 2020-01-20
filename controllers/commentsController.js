@@ -11,10 +11,6 @@ const postComment = (req, res, next) => {
   const { body } = req.body;
   const { username } = req.body;
 
-  console.log(article_id, "<<<article id");
-  console.log(body, "<<<<Body");
-  console.log(username);
-
   addComment(username, body, article_id)
     .then(comment => {
       return res.status(201).send({ comment });
@@ -27,8 +23,6 @@ const getComments = (req, res, next) => {
   const { sort_by } = req.query;
   const { order } = req.query;
 
-  console.log(order, "< incoming comments order");
-
   /**
    * If the order is neither ascending or descending, send a 400
    */
@@ -37,7 +31,7 @@ const getComments = (req, res, next) => {
   // }
 
   /**
-   * If no article exists here, we need to return a 404.
+   * If no article exists here, we are returning a 404.
    * This can be checked with selectArticles Model
    */
 
@@ -48,23 +42,18 @@ const getComments = (req, res, next) => {
 
   selectArticlesById(article_id)
     .then(results => {
-      console.log("Article exists!");
-      console.log(results, "<<<results");
-
       sendComments(article_id, sort_by, order)
         .then(comments => {
-          console.log("sending 200");
           return res.status(200).send({ comments });
         })
         .catch(next);
     })
     .catch(err => {
-      console.log(err, "error in the comments controller");
       /**
-       * if there is an error, the catch will send a status of 404.
+       * if there is an error, the catch will send a status of 404 -> not found
        * We need to return res.sendStatus so that the code stop
        * executing
-       * If the error is an invalid id, send 400.
+       * If the error is an invalid id, send 400, bad request.
        * Else if non-existent, send 404
        */
       if (err.status === 404) {
@@ -92,7 +81,7 @@ const amendComment = (req, res, next) => {
 };
 
 const putComment = (req, res, next) => {
-  return res.sendStatus(405); // Send the response.
+  return res.sendStatus(405);
 };
 
 const deleteCommentController = (req, res, next) => {

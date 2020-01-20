@@ -18,7 +18,7 @@ const sendArticles = async (req, res, next) => {
   let selectUsersErrored = false;
 
   /**
-   * Before we continue, let's just make sure
+   * Before we continue, I am making sure
    * that the topic name even exists by querying
    * the Topics Model.
    *
@@ -26,15 +26,17 @@ const sendArticles = async (req, res, next) => {
    */
 
   /**
-   * In order to test whether author or
-   * topic is undefined, before sending
-   * the error message, we need to tell
+   * Here, I am testing whether author or
+   * topic is undefined.
+   *
+   * Before sending
+   * the error message, I am telling
    * Javascript to wait for the results
    * from selectTopics and selectUsers,
    *
-   * We are using a switch system, if the
-   * results turn true then we need to
-   * test whether either are true,
+   * I am using a switch system. If the
+   * results turn true, I am then
+   * testing whether either are true,
    * before sending the error status
    */
   await selectTopics(topic).catch(err => {
@@ -53,11 +55,17 @@ const sendArticles = async (req, res, next) => {
      * We need to return res.sendStatus so that the code stop
      * executing
      */
-    console.log("no user found");
   });
 
-  console.log(selectTopicsErrored, "topicsErrored");
-  console.log(selectUsersErrored, "usersErrored");
+  /**
+   * Below, I am testing whether either results are
+   * true.
+   *
+   * If either are true, then I am sending a 404 -> not found
+   *
+   * If they are false, then I am telling JS to execute
+   * the selectArticles Controller
+   */
 
   if (selectTopicsErrored === true || selectUsersErrored === true) {
     return res.sendStatus(404);
@@ -78,7 +86,7 @@ const sendArticlesById = (req, res, next) => {
   selectArticlesById(article_id)
     .then(fetchedArticle => {
       /**
-       * for a single article, it need to be returned in an object, and not an array
+       * for a single article, it needs to be returned in an object, and not an array
        *
        * To do this, articles response is set as a
        * default to fetchedArticles.
@@ -102,11 +110,10 @@ const updateVotes = (req, res, next) => {
   const { article_id } = req.params;
   const body = req.body.inc_votes;
 
-  console.log(req.body, "this is the body in update votes Controller");
-
   /**
-   * If the body is empty it is an empty object,
-   * therefore we are checking to see if the object is
+   * If the body is empty, it is an empty object.
+   *
+   * Therefore, we are checking to see if the object is
    * empty before sending the unchanged article back to
    * the client.
    */
@@ -124,7 +131,7 @@ const updateVotes = (req, res, next) => {
       });
 
     /**
-     * If the body is not an empty object, execute changeVotes
+     * Else if the body is not an empty object, execute changeVotes
      */
   } else {
     changeVotes(article_id, body)
@@ -141,20 +148,19 @@ const updateVotes = (req, res, next) => {
  * commands against the model.
  */
 const patchArticles = (req, res, next) => {
-  console.log("here");
-
   return res.sendStatus(405); // Send the response.
 };
 
-const putArticles = (req, res, next) => {
-  console.log("here");
+/**
+ * If a put request is made for articles or comments, we are sending a 405,
+ * method not allowed.
+ */
 
-  return res.sendStatus(405); // Send the response.
+const putArticles = (req, res, next) => {
+  return res.sendStatus(405);
 };
 
 const putComments = (req, res, next) => {
-  console.log("here");
-
   return res.sendStatus(405); // Send the response.
 };
 

@@ -12,7 +12,7 @@ describe("formatDates", () => {
     expect(actual).to.eql([]);
   });
 
-  it("reformats the timestamp value to a stringified date, for one object in the array", () => {
+  it.only("reformats the timestamp value to a stringified date, for one object in the array", () => {
     const data = [
       {
         title: "Living in the shadow of a great man",

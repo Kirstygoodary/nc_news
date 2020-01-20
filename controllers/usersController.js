@@ -2,9 +2,6 @@ const selectUsers = require("../models/usersModel");
 
 const sendUsers = (req, res, next) => {
   const { username } = req.params;
-  console.log(req.params);
-
-  console.log(username, "AUTHOR");
 
   selectUsers(username)
     .then(user => {
@@ -14,9 +11,7 @@ const sendUsers = (req, res, next) => {
 };
 
 const putUsers = (req, res, next) => {
-  console.log("here");
-
-  return res.sendStatus(405); // Send the response.
+  return res.sendStatus(405); // Not allowed
 };
 
 module.exports = { sendUsers, putUsers };

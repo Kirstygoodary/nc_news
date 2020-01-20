@@ -9,7 +9,6 @@ const addComment = (username, body, article_id) => {
     .then(results => {
       return results;
     });
-  // .catch(err => console.log(err));
 };
 
 const sendComments = (article_id, sort_by = "created_at", order = "desc") => {
@@ -31,7 +30,6 @@ changeComment = (comment_id, inc_votes) => {
     .increment("votes", inc_votes)
     .returning("*")
     .then(results => {
-      console.log(results, "<<<<results for updating votes");
       return results;
     });
 };

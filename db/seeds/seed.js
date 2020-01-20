@@ -7,6 +7,28 @@ const {
 
 const { formatDates, formatComments, makeRefObj } = require("../utils/utils");
 
+/**
+ * We are populating the tables with the data provided.
+ *
+ * Each time we migrate the file, the data is rolled
+ * back and re-populated to the table with the
+ * latest data.
+ *
+ * We are re-inserting the data for each table.
+ *
+ * The order has been considered here. Topics and Users
+ * are not dependant on data from other tables.
+ * Therefore the data is inserted first and return
+ * Promise.all for these insertions.
+ *
+ * Once this has been successful, we insert the data
+ * from the function for formatDates, taking
+ * articleData as its argument.
+ *
+ * Return each time we populate the tables so that
+ * JS knows to finish executing the block.
+ */
+
 exports.seed = function(knex) {
   return knex.migrate
     .rollback()
@@ -39,14 +61,4 @@ exports.seed = function(knex) {
         .returning("*");
     })
     .catch(err => {});
-
-  /* Your article data is currently in the incorrect format and will violate your SQL schema. 
-      You will need to write and test the provided formatDate utility function to be able insert your article data.
-      Your comment insertions will depend on information from the seeded articles, so make sure to return the data after it's been seeded.
-      */
-
-  /*Your comment data is currently in the incorrect format and will violate your SQL schema.
-      Keys need renaming, values need changing, and most annoyingly, your comments currently only refer to the title of the article they belong to, not the id. 
-      You will need to write and test the provided makeRefObj and formatComments utility functions to be able insert your comment data.
-      */
 };

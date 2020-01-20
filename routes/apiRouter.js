@@ -4,9 +4,17 @@ const usersRouter = require("../routes/usersRouter");
 const articlesRouter = require("../routes/articlesRouter");
 const commentsRouter = require("../routes/commentsRouter");
 
+/**
+ * DELETE - "/api" -> sends a 405 "Method not allowed"
+ */
+
 apiRouter.delete("/", (req, res, next) => {
   return res.sendStatus(405);
 });
+
+/**
+ * Here, we have sub routers / nested routers which will organise our routes for each data table
+ */
 
 apiRouter.use("/topics", topicsRouter);
 apiRouter.use("/users", usersRouter);

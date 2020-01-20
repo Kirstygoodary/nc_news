@@ -45,7 +45,6 @@ describe("/app", () => {
         .get("/api/users/butter_bridge")
         .expect(200)
         .then(response => {
-          console.log(response.body);
           expect(response.body).to.be.an("object");
         });
     });
@@ -108,7 +107,6 @@ describe("/app", () => {
         .send()
         .expect(200)
         .then(res => {
-          console.log(res.body);
           expect(res.body.article.votes).to.eql(100);
         });
     });
@@ -134,7 +132,6 @@ describe("/app", () => {
         .send({ username: "rogersop", body: "Great article" })
         .expect(201)
         .then(res => {
-          console.log(res.body.comment[0], "<<<<<<<<<");
           expect(res.body).to.contain.keys("comment");
           expect(res.body.comment[0]).to.contain.keys(
             "comment_id",
@@ -159,7 +156,6 @@ describe("/app", () => {
         .get("/api/articles/1/comments?sort_by=created_at&&order=asc")
         .expect(200)
         .then(res => {
-          console.log(res.body, "res.body for results ");
           expect(res.body.comments).to.be.sortedBy("created_at", {
             ascending: true
           });
@@ -340,8 +336,7 @@ describe("/app", () => {
       return request(app)
         .patch("/api/comments/1")
         .send({ inc_votes: "a" })
-        .expect(400)
-        .then(res => console.log(res.body, "results for when inc votes is a"));
+        .expect(400);
     });
     it("PATCH 200 - sends a 200 when there's an updated vote for comments", () => {
       return request(app)
@@ -394,7 +389,6 @@ describe("/app", () => {
         .get("/api/users/butter_bridge")
         .expect(200)
         .then(res => {
-          console.log(res.body);
           expect(res.body).to.contain.keys("user");
           expect(res.body).to.be.an("object");
           expect(res.body.user).to.contain.keys(
