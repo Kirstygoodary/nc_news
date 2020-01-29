@@ -14,6 +14,7 @@ const selectTopics = topic => {
       }
     })
     .then(results => {
+      console.log(results, "<<<results");
       if (results.length === 0) {
         return Promise.reject({
           status: 404,

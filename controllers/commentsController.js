@@ -12,10 +12,24 @@ const postComment = (req, res, next) => {
   const { username } = req.body;
 
   addComment(username, body, article_id)
-    .then(comment => {
-      return res.status(201).send({ comment });
+    .then(comments => {
+      return res.status(201).send({ comment: comments });
     })
-    .catch(next);
+    .catch(next)
+    .catch(err => {
+      console.log(err);
+      /**
+       * if there is an error, the catch will send a status of 404 -> not found
+       * We need to return res.sendStatus so that the code stop
+       * executing
+       * If the error is an invalid id, send 400, bad request.
+       * Else if non-existent, send 404
+       */
+      if (err.status === 404) {
+        return res.sendStatus(err.status);
+      }
+      return res.sendStatus(400);
+    });
 };
 
 const getComments = (req, res, next) => {
@@ -40,27 +54,27 @@ const getComments = (req, res, next) => {
    * If it doesn't exist, the error will go in to the independent catch block to run the error
    */
 
-  selectArticlesById(article_id)
-    .then(results => {
-      sendComments(article_id, sort_by, order)
-        .then(comments => {
-          return res.status(200).send({ comments });
-        })
-        .catch(next);
-    })
-    .catch(err => {
-      /**
-       * if there is an error, the catch will send a status of 404 -> not found
-       * We need to return res.sendStatus so that the code stop
-       * executing
-       * If the error is an invalid id, send 400, bad request.
-       * Else if non-existent, send 404
-       */
-      if (err.status === 404) {
-        return res.sendStatus(err.status);
-      }
-      return res.sendStatus(400);
-    });
+  selectArticlesById(article_id).then(results => {
+    sendComments(article_id, sort_by, order)
+      .then(comments => {
+        return res.status(200).send({ comments });
+      })
+      .catch(next);
+  });
+  // .catch(err => {
+  //   console.log(err);
+  //   /**
+  //    * if there is an error, the catch will send a status of 404 -> not found
+  //    * We need to return res.sendStatus so that the code stop
+  //    * executing
+  //    * If the error is an invalid id, send 400, bad request.
+  //    * Else if non-existent, send 404
+  //    */
+  //   if (err.status === 404) {
+  //     return res.sendStatus(err.status);
+  //   }
+  //   return res.sendStatus(400);
+  // });
 };
 
 const amendComment = (req, res, next) => {
@@ -77,7 +91,21 @@ const amendComment = (req, res, next) => {
     .then(comment => {
       return res.status(200).send({ comment: comment[0] });
     })
-    .catch(next);
+    .catch(next)
+    .catch(err => {
+      console.log(err);
+      /**
+       * if there is an error, the catch will send a status of 404 -> not found
+       * We need to return res.sendStatus so that the code stop
+       * executing
+       * If the error is an invalid id, send 400, bad request.
+       * Else if non-existent, send 404
+       */
+      if (err.status === 404) {
+        return res.sendStatus(err.status);
+      }
+      return res.sendStatus(400);
+    });
 };
 
 const putComment = (req, res, next) => {

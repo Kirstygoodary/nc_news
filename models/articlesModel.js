@@ -46,6 +46,7 @@ const selectArticles = (
        */
       .orderBy(sort_by, order)
       .then(results => {
+        console.log(results, "<<<Results");
         return results;
       })
   );
@@ -67,6 +68,7 @@ const selectArticlesById = article_id => {
       .leftJoin("comments", "articles.article_id", "=", "comments.article_id")
       .groupBy("articles.article_id")
       .then(results => {
+        console.log(results);
         if (results.length === 0) {
           return Promise.reject({
             status: 404,
@@ -86,6 +88,7 @@ const changeVotes = (article_id, body = 0) => {
     .increment("votes", body)
     .returning("*")
     .then(results => {
+      console.log(results, "<<<Results");
       return results;
     });
 };

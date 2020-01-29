@@ -8,7 +8,8 @@ const {
 topicsRouter
   .route("/")
   .get(sendTopics)
-  .all(catchAllController);
+  .patch(patchTopics) // 405
+  .all(catchAllController); // 405
 
 /**
  * .all() -> method which catches all other requests that will in this instance return a 405

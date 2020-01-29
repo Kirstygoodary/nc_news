@@ -9,7 +9,7 @@ const {
 commentsRouter
   .route("/:comment_id")
   .patch(amendComment)
-  .put(putComment)
+  .put(putComment) //405
   .delete(deleteCommentController)
   .post(postComment);
 

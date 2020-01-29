@@ -11,8 +11,14 @@ app.all("/*", (req, res, next) => {
 
 app.use(function(err, req, res, next) {
   if (err.status) {
-    return res.status(err.status).send({ msg: err.msg });
+    console.log(err);
+    return res.sendStatus(err.status).send({ msg: err.msg });
   } else {
+    if (err.code === "23503") {
+      return res.sendStatus(404).send({ msg: "article ID does not exist" });
+    }
+  }
+  {
     return res.status(400).send({ msg: "Bad request" });
   }
 }); // generic error handler

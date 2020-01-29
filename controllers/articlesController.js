@@ -122,7 +122,7 @@ const updateVotes = (req, res, next) => {
     selectArticlesById(article_id)
       .then(fetchedArticle => {
         return res.status(200).send({
-          article: fetchedArticle.results[0]
+          article: fetchedArticle.results
         });
       })
       .catch(function(err) {
