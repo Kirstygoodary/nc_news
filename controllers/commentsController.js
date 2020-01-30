@@ -17,7 +17,6 @@ const postComment = (req, res, next) => {
     })
     .catch(next)
     .catch(err => {
-      console.log(err);
       /**
        * if there is an error, the catch will send a status of 404 -> not found
        * We need to return res.sendStatus so that the code stop
@@ -93,7 +92,6 @@ const amendComment = (req, res, next) => {
     })
     .catch(next)
     .catch(err => {
-      console.log(err);
       /**
        * if there is an error, the catch will send a status of 404 -> not found
        * We need to return res.sendStatus so that the code stop

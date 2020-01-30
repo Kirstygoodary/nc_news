@@ -11,7 +11,6 @@ app.all("/*", (req, res, next) => {
 
 app.use(function(err, req, res, next) {
   if (err.status) {
-    console.log(err);
     return res.sendStatus(err.status).send({ msg: err.msg });
   } else {
     if (err.code === "23503") {

@@ -1,7 +1,6 @@
 const connection = require("../db/connection");
 
 const addComment = (username, body, article_id) => {
-  console.log(username, article_id);
   return connection
     .select("comment_id", "votes", "created_at", "author", "body")
     .from("comments")
@@ -9,7 +8,6 @@ const addComment = (username, body, article_id) => {
     .insert({ author: username, body: body, article_id: article_id })
     .returning("*")
     .then(results => {
-      console.log(results, "<<<Results");
       if (results.length === 0) {
         return Promise.reject({
           status: 404,
@@ -27,7 +25,6 @@ const sendComments = (article_id, sort_by = "created_at", order = "desc") => {
     .where("comments.article_id", "=", article_id)
     .orderBy(sort_by, order)
     .then(results => {
-      console.log(results, "<<< model results");
       if (results.length === 0) {
         return Promise.reject({
           status: 404,
@@ -39,7 +36,6 @@ const sendComments = (article_id, sort_by = "created_at", order = "desc") => {
 };
 
 changeComment = (comment_id, inc_votes) => {
-  console.log(comment_id);
   return connection
     .select("*")
     .from("comments")
@@ -47,7 +43,6 @@ changeComment = (comment_id, inc_votes) => {
     .increment("votes", inc_votes)
     .returning("*")
     .then(results => {
-      console.log(results, "<<<Results");
       if (results.length === 0) {
         return Promise.reject({
           status: 404,
