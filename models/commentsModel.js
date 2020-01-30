@@ -8,13 +8,7 @@ const addComment = (username, body, article_id) => {
     .insert({ author: username, body: body, article_id: article_id })
     .returning("*")
     .then(results => {
-      if (results.length === 0) {
-        return Promise.reject({
-          status: 404,
-          msg: "Comment does not exist"
-        });
-      }
-      return results;
+      return results[0];
     });
 };
 

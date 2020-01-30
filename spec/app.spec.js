@@ -91,7 +91,7 @@ describe("/app", () => {
         .send({ inc_votes: 1 })
         .expect(200)
         .then(res => {
-          expect(res.body.article[0].votes).to.eql(101);
+          expect(res.body.article.votes).to.eql(101);
           expect(res.body).to.contain.keys("article");
         });
     });
@@ -126,24 +126,24 @@ describe("/app", () => {
           );
         });
     });
-    it("POST 201 - posts a comment to the article and responds with the post comment", () => {
+    it.only("POST 201 - posts a comment to the article and responds with the post comment", () => {
       return request(app)
         .post("/api/articles/1/comments")
         .send({ username: "rogersop", body: "Great article" })
         .expect(201)
         .then(res => {
           expect(res.body).to.contain.keys("comment");
-          expect(res.body.comment[0]).to.contain.keys(
+          expect(res.body.comment).to.contain.keys(
             "comment_id",
             "author",
             "body",
             "votes",
             "created_at"
           );
-          expect(res.body.comment[0].body).to.eql("Great article");
-          expect(res.body.comment[0].author).to.eql("rogersop");
-          expect(res.body.comment[0].votes).to.eql(0);
-          expect(res.body.comment[0].created_at).to.eql(
+          expect(res.body.comment.body).to.eql("Great article");
+          expect(res.body.comment.author).to.eql("rogersop");
+          expect(res.body.comment.votes).to.eql(0);
+          expect(res.body.comment.created_at).to.eql(
             "2020-01-30T00:00:00.000Z"
           );
           /**

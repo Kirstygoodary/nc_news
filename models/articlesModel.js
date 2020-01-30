@@ -86,7 +86,7 @@ const changeVotes = (article_id, body = 0) => {
     .increment("votes", body)
     .returning("*")
     .then(results => {
-      return results;
+      return results[0];
     });
 };
 
