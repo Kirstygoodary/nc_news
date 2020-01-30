@@ -148,7 +148,7 @@ describe("/app", () => {
           expect(res.body.comment[0].author).to.eql("rogersop");
           expect(res.body.comment[0].votes).to.eql(0);
           expect(res.body.comment[0].created_at).to.eql(
-            "2020-01-27T00:00:00.000Z"
+            "2020-01-30T00:00:00.000Z"
           );
           /**
            * This test needs to be amended so that it provides the updated date every time the data is migrated.
