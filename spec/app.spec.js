@@ -34,7 +34,6 @@ describe("/app", () => {
         .get("/api/topicsss")
         .expect(404)
         .then(response => {
-          console.log(response.body.msg);
           expect(response.body.msg).to.equal("Route not found");
         });
     });
@@ -92,7 +91,6 @@ describe("/app", () => {
         .send({ inc_votes: 1 })
         .expect(200)
         .then(res => {
-          console.log(res.body, "updated vote");
           expect(res.body.article[0].votes).to.eql(101);
           expect(res.body).to.contain.keys("article");
         });
@@ -109,7 +107,6 @@ describe("/app", () => {
         .send()
         .expect(200)
         .then(res => {
-          console.log(res.body, "ignored patch request");
           expect(res.body.article[0].votes).to.eql(100);
         });
     });
@@ -135,7 +132,6 @@ describe("/app", () => {
         .send({ username: "rogersop", body: "Great article" })
         .expect(201)
         .then(res => {
-          console.log(">>>>>", res.body, " posted comment <<<<<<<");
           expect(res.body).to.contain.keys("comment");
           expect(res.body.comment[0]).to.contain.keys(
             "comment_id",
@@ -293,7 +289,6 @@ describe("/app", () => {
         .get("/api/articles/2/comments")
         .expect(200)
         .then(res => {
-          console.log(res.body, "<<<res.body");
           expect(res.body.comments.length).to.eql(0);
         });
     });
@@ -331,7 +326,6 @@ describe("/app", () => {
         })
         .expect(201)
         .then(res => {
-          console.log(res.body, "res.body");
           expect(res.body).to.contain.keys("comment");
         });
     });
