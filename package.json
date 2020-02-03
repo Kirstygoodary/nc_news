@@ -34,6 +34,7 @@
   "homepage": "https://github.com/northcoders/be-nc-news#readme",
   "dependencies": {
     "chai-sorted": "^0.2.0",
+    "cors": "^2.8.5",
     "express": "^4.17.1",
     "knex": "^0.20.7",
     "moment-timezone": "^0.5.27",
