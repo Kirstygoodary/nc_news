@@ -107,7 +107,7 @@ describe("/app", () => {
         .send()
         .expect(200)
         .then(res => {
-          expect(res.body.article[0].votes).to.eql(100);
+          expect(res.body.article.votes).to.eql(100);
         });
     });
     it("GET 200 - a request for article id 1 returns an object", () => {
@@ -126,7 +126,7 @@ describe("/app", () => {
           );
         });
     });
-    it.only("POST 201 - posts a comment to the article and responds with the post comment", () => {
+    it("POST 201 - posts a comment to the article and responds with the post comment", () => {
       return request(app)
         .post("/api/articles/1/comments")
         .send({ username: "rogersop", body: "Great article" })
@@ -297,12 +297,12 @@ describe("/app", () => {
         .get("/api/articles/2000/comments")
         .expect(404);
     });
-    it("returns a 404 when articles does not exist in comments endpoint, for 1000 article id", () => {
+    it.only("returns a 404 when articles does not exist in comments endpoint, for 1000 article id", () => {
       return request(app)
         .get("/api/articles/10000/comments")
         .expect(404);
     });
-    it("returns a 400 when given a non-existent id", () => {
+    it.only("returns a 400 when given a non-existent id", () => {
       return request(app)
         .get("/api/articles/not-a-valid-id/comments")
         .expect(400);

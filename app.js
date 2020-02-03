@@ -11,10 +11,10 @@ app.all("/*", (req, res, next) => {
 
 app.use(function(err, req, res, next) {
   if (err.status) {
-    return res.sendStatus(err.status).send({ msg: err.msg });
+    return res.status(err.status).send({ msg: err.msg });
   } else {
     if (err.code === "23503") {
-      return res.sendStatus(404).send({ msg: "article ID does not exist" });
+      return res.status(404).send({ msg: "article ID does not exist" });
     }
   }
   {

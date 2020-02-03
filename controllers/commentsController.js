@@ -53,13 +53,26 @@ const getComments = (req, res, next) => {
    * If it doesn't exist, the error will go in to the independent catch block to run the error
    */
 
-  selectArticlesById(article_id).then(results => {
-    sendComments(article_id, sort_by, order)
-      .then(comments => {
-        return res.status(200).send({ comments });
-      })
-      .catch(next);
-  });
+  //selectArticlesById(article_id).then(results => {
+
+  const getCommentsPromise = sendComments(article_id, sort_by, order);
+  const getArticlePromise = selectArticlesById(article_id);
+
+  Promise.all([getCommentsPromise, getArticlePromise])
+    .then(([comments]) => {
+      res.status(200).send({ comments });
+    })
+    .catch(next);
+
+  // sendComments(article_id, sort_by, order)
+  //   .then(comments => {
+  //     return res.status(200).send({ comments });
+  //   })
+  //   .catch(err => {
+  //     console.log({ err });
+  //     next(err);
+  //   });
+  //});
   // .catch(err => {
   //   console.log(err);
   //   /**

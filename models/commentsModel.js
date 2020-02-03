@@ -17,16 +17,16 @@ const sendComments = (article_id, sort_by = "created_at", order = "desc") => {
     .select("comment_id", "votes", "created_at", "author", "body")
     .from("comments")
     .where("comments.article_id", "=", article_id)
-    .orderBy(sort_by, order)
-    .then(results => {
-      if (results.length === 0) {
-        return Promise.reject({
-          status: 404,
-          msg: "Comment does not exist"
-        });
-      }
-      return results;
-    });
+    .orderBy(sort_by, order);
+  // .then(results => {
+  //   if (results.length === 0) {
+  //     return Promise.reject({
+  //       status: 404,
+  //       msg: "Comment does not exist"
+  //     });
+  //   }
+  //   return results;
+  // });
 };
 
 changeComment = (comment_id, inc_votes) => {

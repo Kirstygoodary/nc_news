@@ -12,6 +12,12 @@ apiRouter.delete("/", (req, res, next) => {
   return res.sendStatus(405);
 });
 
+apiRouter.get('/', ()=> {
+  res.send({
+    '/api/articles': 'returns all the articles'
+  })
+})
+
 /**
  * Here, we have sub routers / nested routers which will organise our routes for each data table
  */
