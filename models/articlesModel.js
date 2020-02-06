@@ -46,6 +46,12 @@ const selectArticles = (
        */
       .orderBy(sort_by, order)
       .then(results => {
+        if (results.length === 0) {
+          return Promise.reject({
+            status: 404,
+            msg: "Request does not exist"
+          });
+        }
         return results;
       })
   );
