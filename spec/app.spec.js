@@ -422,5 +422,13 @@ describe("/app", () => {
         .send({ inc_votes: 1 })
         .expect(404);
     });
+    it.only("GET - 404 returns  404 and the appropriate message", () => {
+      return request(app)
+        .patch("/api/error")
+        .expect(404)
+        .then(response => {
+          expect(response.body.msg).to.equal("Route not found");
+        });
+    });
   });
 });

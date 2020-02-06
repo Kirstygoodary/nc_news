@@ -49,7 +49,7 @@ const selectArticles = (
         if (results.length === 0) {
           return Promise.reject({
             status: 404,
-            msg: "Request does not exist"
+            msg: "Route not found"
           });
         }
         return results;
