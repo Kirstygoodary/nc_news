@@ -284,7 +284,7 @@ describe("/app", () => {
           );
         });
     });
-    it.only("returns a 200 with an empty array when the article exists but has no comments", () => {
+    it("returns a 200 with an empty array when the article exists but has no comments", () => {
       return request(app)
         .get("/api/articles/2/comments")
         .expect(200)
@@ -297,12 +297,12 @@ describe("/app", () => {
         .get("/api/articles/2000/comments")
         .expect(404);
     });
-    it.only("returns a 404 when articles does not exist in comments endpoint, for 1000 article id", () => {
+    it("returns a 404 when articles does not exist in comments endpoint, for 1000 article id", () => {
       return request(app)
         .get("/api/articles/10000/comments")
         .expect(404);
     });
-    it.only("returns a 400 when given a non-existent id", () => {
+    it("returns a 400 when given a non-existent id", () => {
       return request(app)
         .get("/api/articles/not-a-valid-id/comments")
         .expect(400);
@@ -422,9 +422,17 @@ describe("/app", () => {
         .send({ inc_votes: 1 })
         .expect(404);
     });
-    it.only("GET - 404 returns  404 and the appropriate message", () => {
+    it("GET - 404 returns  404 and the appropriate message", () => {
       return request(app)
         .patch("/api/error")
+        .expect(404)
+        .then(response => {
+          expect(response.body.msg).to.equal("Route not found");
+        });
+    });
+    it.only("POST - 404 returned when bad URL", () => {
+      return request(app)
+        .post("/api/articles/33/commentstest")
         .expect(404)
         .then(response => {
           expect(response.body.msg).to.equal("Route not found");
