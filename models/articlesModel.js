@@ -2,7 +2,7 @@ const connection = require("../db/connection");
 
 const selectArticles = (
   username,
-  topic,
+  topic = "cooking",
   sort_by = "created_at",
   order = "desc"
 ) => {
