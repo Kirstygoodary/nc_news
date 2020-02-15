@@ -10,7 +10,7 @@ const selectUsers = require("../models/usersModel");
 
 const sendArticles = async (req, res, next) => {
   const { author } = req.query;
-  const { topic } = req.query;
+  const { topic } = req.query; // => ""
   const { sort_by } = req.query;
   const { order } = req.query;
 

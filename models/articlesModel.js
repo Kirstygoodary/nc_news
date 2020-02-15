@@ -6,6 +6,14 @@ const selectArticles = (
   sort_by = "created_at",
   order = "desc"
 ) => {
+  /**
+   * If a request arrives where the sort_by was just an empty string,
+   * then we need to give it a value.
+   */
+  if (sort_by === "") {
+    sort_by = "comment_count";
+  }
+
   return (
     connection
       .select("articles.*")
