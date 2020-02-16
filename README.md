@@ -85,7 +85,7 @@ npm run test-utils
 
 ## [](https://github.com/Kirstygoodary/nc_news#contributing)Contributing
 
-NC News is not currently open for contributions.
+The Good News.inc is not currently open for contributions.
 
 ## [](https://github.com/Kirstygoodary/nc_news#authors)Authors
 
