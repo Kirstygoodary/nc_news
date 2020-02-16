@@ -28,7 +28,7 @@ apiRouter.use("/articles", articlesRouter);
 apiRouter.use("/comments", commentsRouter);
 apiRouter.all("*", (req, res) => {
   return res.status(404).send({
-    message: "Your custom 404 message"
+    message: "URL does not exist"
   });
 });
 
