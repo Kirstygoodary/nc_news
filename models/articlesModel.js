@@ -2,8 +2,8 @@ const connection = require("../db/connection");
 
 const selectArticles = (
   username,
-  topic = "", //cooking
-  sort_by = "", //created_at
+  topic = "", // cooking
+  sort_by = "", // created_at
   order = "desc"
 ) => {
   if (sort_by === "") {
