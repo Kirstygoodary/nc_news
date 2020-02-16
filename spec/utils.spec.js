@@ -114,8 +114,6 @@ describe("formatDates", () => {
   });
 });
 
-// test for mutated data!!!!!
-
 describe("makeRefObj", () => {
   it("returns an empty object when passed an empty array", () => {
     const data = [];

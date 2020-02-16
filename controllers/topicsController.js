@@ -10,11 +10,6 @@ const sendTopics = (req, res, next) => {
     });
 };
 
-/**
- * @name patchTopics
- * @description This function executes patch
- * commands against the model.
- */
 const patchTopics = (req, res, next) => {
   return res.send(405);
 };

@@ -11,7 +11,7 @@ const sendUsers = (req, res, next) => {
 };
 
 const putUsers = (req, res, next) => {
-  return res.sendStatus(405); // Not allowed
+  return res.sendStatus(405);
 };
 
 module.exports = { sendUsers, putUsers };

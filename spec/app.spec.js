@@ -12,13 +12,9 @@ describe("/app", () => {
 
   describe("/topics", () => {
     it("GET: 200 response", () => {
-      // mocha wont wait for the request to finish!
-      //  if this anon function returns undefined - mocha doesn't know to wait
-      // if i return a promise object mocha knows to wait -- so it wont pass things by default
-
       return request(app)
         .get("/api/topics")
-        .expect(200) // asynchronous object -> promise
+        .expect(200)
         .then(response => {
           expect(response.body).to.be.an("object");
           expect(response.body.topics[0]).to.have.keys("slug", "description");
@@ -146,9 +142,6 @@ describe("/app", () => {
           expect(res.body.comment.created_at).to.eql(
             "2020-01-30T00:00:00.000Z"
           );
-          /**
-           * This test needs to be amended so that it provides the updated date every time the data is migrated.
-           */
         });
     });
     it("GET 200 - responds with an array of comments for the given article_id ", () => {
@@ -307,11 +300,7 @@ describe("/app", () => {
         .get("/api/articles/not-a-valid-id/comments")
         .expect(400);
     });
-    // it("returns a 400 when supplied an invalid order for comments", () => {
-    //   return request(app)
-    //     .get("/api/articles/1/comments?order=not-a-valid-order")
-    //     .expect(400);
-    // });
+
     it("PUT 405 - sends the appropriate error message when given a patch request for comments", () => {
       return request(app)
         .put("/api/articles/1/comments")

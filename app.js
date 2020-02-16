@@ -26,8 +26,6 @@ app.use(function(err, req, res, next) {
       error: err.message
     });
   }
-}); // generic error handler
-
-//REMEMBER TO INCLUDE ANAT'S CODE FOR PSQL / CUSTOM ERRORS
+});
 
 module.exports = app;

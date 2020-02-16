@@ -16,18 +16,18 @@ const {
 articlesRouter
   .route("/")
   .get(sendArticles)
-  .patch(patchArticles); //405
+  .patch(patchArticles);
 
 articlesRouter
   .route("/:article_id")
   .get(sendArticlesById)
   .patch(updateVotes)
-  .put(putArticles); //405
+  .put(putArticles);
 
 articlesRouter
   .route("/:article_id/comments")
   .post(postComment)
   .get(getComments)
-  .put(putComments); //405
+  .put(putComments);
 
 module.exports = articlesRouter;

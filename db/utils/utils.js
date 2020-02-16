@@ -3,7 +3,6 @@ exports.formatDates = datum => {
     return [];
   }
   let copiedData = JSON.parse(JSON.stringify(datum));
-  //let test = new Date(datum[0].created_at).toString();
 
   copiedData.forEach(function(data) {
     let formattedDate = new Date(data.created_at).toJSON();

@@ -18,15 +18,6 @@ const sendComments = (article_id, sort_by = "created_at", order = "desc") => {
     .from("comments")
     .where("comments.article_id", "=", article_id)
     .orderBy(sort_by, order);
-  // .then(results => {
-  //   if (results.length === 0) {
-  //     return Promise.reject({
-  //       status: 404,
-  //       msg: "Comment does not exist"
-  //     });
-  //   }
-  //   return results;
-  // });
 };
 
 changeComment = (comment_id, inc_votes) => {
@@ -70,7 +61,3 @@ module.exports = {
   changeComment,
   deleteCommentModel
 };
-
-//sort_by, which sorts the comments by any valid column (defaults to created_at)
-// order, which can be set to asc or desc for ascending or descending (defaults to descending)
-//module.exports = { addComment, sendComments };
