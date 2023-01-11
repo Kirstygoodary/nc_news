@@ -36,7 +36,7 @@
     "chai-sorted": "^0.2.0",
     "cors": "^2.8.5",
     "express": "^4.17.1",
-    "knex": "^0.20.7",
+    "knex": "^2.4.0",
     "moment-timezone": "^0.5.27",
     "pg": "^7.17.1",
     "supertest": "^4.0.2"
